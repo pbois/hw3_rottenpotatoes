@@ -20,9 +20,34 @@ end
 # Make it easier to express checking or unchecking several boxes at once
 #  "When I uncheck the following ratings: PG, G, R"
 #  "When I check the following ratings: G"
-
 When /I (un)?check the following ratings: (.*)/ do |uncheck, rating_list|
-  # HINT: use String#split to split up the rating_list, then
-  #   iterate over the ratings and reuse the "When I check..." or
-  #   "When I uncheck..." steps in lines 89-95 of web_steps.rb
+  rating_list.split(%r{,\s*}).each do |rating|
+    check = !uncheck
+    if check then
+      check("ratings_#{rating}")
+    else
+      uncheck("ratings_#{rating}")
+    end
+  end
 end
+
+Then /I should see all the movies/ do
+  all("table#movies tbody tr").count.should == Movie.count
+end
+
+#Then /^I shouldn't see any movies$/ do
+#  all("table#movies tbody tr").count.should == 0
+#end
+
+Then /I should(n't)? see: (.*)/ do |not_present, title_list|
+  titles = title_list.split(%r{,\s*})
+  titles.each do |title|
+    present = !not_present
+    if present then
+      page.should have_content(title)
+    else
+      page.should_not have_content(title)
+    end
+   end
+end
+
