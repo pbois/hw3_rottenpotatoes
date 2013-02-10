@@ -27,11 +27,6 @@ Scenario: restrict to movies with 'PG' or 'R' ratings
   When I press "ratings_submit"
   Then I should see: The Terminator, When Harry Met Sally, Amelie, The Incredibles, Raiders of the Lost Ark
   And I shouldn't see: Aladdin, The Help, Chocolat, 2001: A Space Odyssey, Chicken Run
-
-#Scenario: no ratings selected
-#  Given I uncheck the following ratings: G, R, PG-13, PG, NC-17
-#  When I press "ratings_submit"
-#  Then I shouldn't see any movies
         
 Scenario: all ratings selected
   Given I check the following ratings: G, R, PG-13, PG, NC-17
